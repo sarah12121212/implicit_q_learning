@@ -4,7 +4,7 @@
 #SBATCH --gpus-per-node=l40s
 #SBATCH --mem=10G
 #SBATCH --cpus-per-task=3
-#SBATCH --mail-user=jleng1@ualberta.ca
+#SBATCH --mail-user=smt@ualberta.ca
 #SBATCH --mail-type=END,FAIL
 
 # Example usage:
@@ -87,7 +87,7 @@ HYPERPARAM_FORMATTED=$(echo $HYPERPARAM | tr ',' '-')
 # Training loop for multiple seeds per hyperparameter
 for ((i=0; i<NUM_SEEDS; i++)); do
     SEED=$i  # Start seeds at 0
-    python $path/train_offline.py --env_name=$ENV_NAME --config=$path/configs/$CONFIG.py --learner=DDQN --eval_episodes=100 --eval_interval=1000000 --seed=$SEED --overrides=$HYPERPARAM
+    python $path/train_offline.py --env_name=$ENV_NAME --config=$path/configs/$CONFIG.py --learner=DDQN --eval_episodes=100 --eval_interval=1000000 --seed=$SEED --overrides=$HYPERPARAM --dummy=True
     RESULT_FILE=$RESULTS_DIR/${CONFIG}seed${SEED}-env=${ENV_NAME}-hypers=${HYPERPARAM_FORMATTED}.txt
     cp ./tmp/DDQN_${SEED}_${HYPERPARAM_FORMATTED}.txt $RESULT_FILE
 done
